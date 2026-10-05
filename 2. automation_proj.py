@@ -1,14 +1,29 @@
 from datetime import datetime
 
 class AutomationProject:
-    """自動化項目標準工作流程（增強版，支援狀態、備註、匯出報告）"""
+    """
+    自動化項目標準工作流程（增強版，支援狀態、備註、匯出報告）
+    This class models a 6-stage lifecycle for building Python automation projects.
+    It tracks workflow steps, timestamps, custom notes, supports rollback and JSON report export.
+    Fluent method chaining is enabled so methods can be chained one after another.
+    """
     def __init__(self, project_name):
-        self.name = project_name
-        self.created_at = datetime.now().isoformat()
-        self.records = []  # 儲存每一步完整資訊，不只是名稱
-        self.current_step_index = 0
+        """
+        Constructor: Initialize a new automation project
+        :param project_name: Name of your automation project
+        """
+        self.name = project_name          # Project name
+        self.created_at = datetime.now().isoformat()  # Project creation timestamp (ISO format)
+        self.records = []                 # Store full log of each executed step
+        self.current_step_index = 0       # Track which workflow step we are currently on
 
     def _add_step_record(self, step_name, description, notes=""):
+        """
+        Private helper method: create and append one step log entry
+        :param step_name: Name of this workflow stage
+        :param description: Short description of the stage
+        :param notes: Custom free-text notes for this step
+        """
         record = {
             "step_name": step_name,
             "desc": description,
@@ -18,7 +33,12 @@ class AutomationProject:
         self.records.append(record)
 
     def analyze_requirements(self, notes=""):
-        """步驟一：需求分析"""
+        """
+        Step 1: Requirement Analysis
+        Identify repetitive tasks, check automation feasibility and estimate benefits.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[1/6] 分析自動化需求...")
         print("  - 識別重複性任務")
         print("  - 評估自動化可行性")
@@ -28,7 +48,12 @@ class AutomationProject:
         return self
 
     def design_solution(self, notes=""):
-        """步驟二：方案設計"""
+        """
+        Step 2: Solution Design
+        Select tools, design workflow/data flow and exception handling strategy.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[2/6] 設計自動化解決方案...")
         print("  - 選擇適當的工具和技術")
         print("  - 設計流程圖和數據流")
@@ -38,7 +63,12 @@ class AutomationProject:
         return self
 
     def develop_script(self, notes=""):
-        """步驟三：腳本開發"""
+        """
+        Step 3: Script Development
+        Write core automation logic, error handling and logging.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[3/6] 開發自動化腳本...")
         print("  - 編寫核心功能代碼")
         print("  - 實現錯誤處理機制")
@@ -48,7 +78,12 @@ class AutomationProject:
         return self
 
     def test_automation(self, notes=""):
-        """步驟四：測試驗證"""
+        """
+        Step 4: Test & Validation
+        Run unit test, integration test and stress test for edge cases.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[4/6] 執行自動化測試...")
         print("  - 單元測試各個模組")
         print("  - 整合測試完整流程")
@@ -58,7 +93,12 @@ class AutomationProject:
         return self
 
     def deploy_solution(self, notes=""):
-        """步驟五：部署上線"""
+        """
+        Step 5: Deploy to production
+        Configure runtime environment, schedule tasks and setup monitoring alerts.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[5/6] 部署自動化解決方案...")
         print("  - 配置執行環境")
         print("  - 設置定時任務")
@@ -68,7 +108,12 @@ class AutomationProject:
         return self
 
     def monitor_maintain(self, notes=""):
-        """步驟六：監控維護"""
+        """
+        Step 6: Monitor & Maintain
+        Review logs, optimize performance and iterate based on new requirements.
+        :param notes: Optional custom notes for this stage
+        :return: self (enable fluent chaining)
+        """
         print(f"\n[6/6] 持續監控與維護...")
         print("  - 定期檢查執行日誌")
         print("  - 優化性能和穩定性")
@@ -78,7 +123,12 @@ class AutomationProject:
         return self
 
     def rollback_to(self, step_idx:int):
-        """回滾到指定階段，保留歷史紀錄"""
+        """
+        Roll back project progress marker to specified step index.
+        Keep all historical records intact; only change current step pointer.
+        :param step_idx: target step number (0~6)
+        :return: self (enable fluent chaining)
+        """
         valid_idx = [0,1,2,3,4,5,6]
         if step_idx not in valid_idx:
             print("無效步驟索引，無法回滾")
@@ -88,7 +138,11 @@ class AutomationProject:
         return self
 
     def summary(self):
-        """項目總結"""
+        """
+        Print human-readable project summary to terminal.
+        Show project name, creation time and list all completed workflow records.
+        :return: self (enable fluent chaining)
+        """
         print(f"\n{'='*60}")
         print(f"項目 '{self.name}' 完成！")
         print(f"建立時間: {self.created_at}")
@@ -99,7 +153,11 @@ class AutomationProject:
         return self
 
     def export_report(self, filepath="automation_project_report.json"):
-        """匯出專案報告"""
+        """
+        Export full project log into JSON file for audit / documentation.
+        :param filepath: output JSON file path, default = automation_project_report.json
+        :return: self (enable fluent chaining)
+        """
         import json
         payload = {
             "project": self.name,
@@ -111,7 +169,9 @@ class AutomationProject:
         print(f"\n📄 專案報告已匯出至 {filepath}")
         return self
 
-# 執行完整自動化項目流程
+
+# ===================== Demo execution =====================
+# Create an automation project instance: Financial Report Automation
 project = AutomationProject("財務報表自動化")
 (project
     .analyze_requirements(notes="輸入：每月Excel財務資料；輸出：合併報表")
@@ -126,6 +186,7 @@ project = AutomationProject("財務報表自動化")
 
 """
 Python 自動化應用場景分類（補充對應工具）
+Reference cheat sheet: common automation categories, use cases and recommended Python libraries
 """
 scenarios = [
     ("網頁自動化", [

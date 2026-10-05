@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
+
 class ElementLocator:
     """元素定位最佳實踐類"""
 
@@ -38,13 +39,15 @@ class ElementLocator:
 
         raise NoSuchElementException("所有定位策略均失敗")
 
+
 # 使用示例
 driver = webdriver.Chrome()
+driver.get("https://bootswatch.com/default/")  # add a testing site
 locator = ElementLocator(driver)
 
 # 備援定位策略示例
 element = locator.find_with_fallback(
-    (By.ID, "submit-btn"),           # 首選：ID
+    (By.ID, "submit-btn"),  # 首選：ID
     (By.CSS_SELECTOR, "button[type='submit']"),  # 備選：CSS
-    (By.XPATH, "//button[contains(text(), '提交')]")  # 最後：XPath
+    (By.XPATH, "//button[contains(text(), '提交')]"),  # 最後：XPath
 )
